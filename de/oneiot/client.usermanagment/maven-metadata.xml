@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>de.oneiot</groupId>
+  <artifactId>client.usermanagment</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20200923210544</lastUpdated>
+  </versioning>
+</metadata>
