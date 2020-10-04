@@ -4,8 +4,9 @@
   <artifactId>client.usermanagment</artifactId>
   <versioning>
     <versions>
+      <version>0.0.1-SNAPSHOT</version>
       <version>0.0.3-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20201004222008</lastUpdated>
+    <lastUpdated>20201004222313</lastUpdated>
   </versioning>
 </metadata>
