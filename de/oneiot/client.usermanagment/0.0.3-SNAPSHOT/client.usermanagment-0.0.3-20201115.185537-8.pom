@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.3.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>de.oneiot</groupId>
+	<artifactId>client.usermanagment</artifactId>
+	<version>0.0.3-SNAPSHOT</version>
+	<name>Usermanagement client</name>
+	<description>The OneIoT Usermanagement client. You need to add spring-boot-starter-web, spring-boot-starter-oauth2-client and spring-boot-starter-security to your projects dependencies.</description>
+
+	<properties>
+		<java.version>11</java.version>
+		<github.global.server>github</github.global.server>
+		<devicecloud.httpclient.version>4.4.1</devicecloud.httpclient.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${devicecloud.httpclient.version}</version>
+		</dependency>
+<!-- Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!--<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<scope>provided</scope>
+		</dependency>
+<!-- Util -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+<!-- Test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	
+	</dependencies>
+
+	<distributionManagement>
+		<repository>
+			<id>local.staging.repo</id>
+			<name>Temporary Staging Repository</name>
+			<url>file://${project.build.directory}/mvn-repo</url>
+		</repository>
+	</distributionManagement>
+	<build>
+
+
+		<plugins>
+		<!-- Deploys the build artifacts to github. Is executed in the "site" lifecycle phase. -->
+		<plugin>
+			<groupId>com.github.github</groupId>
+			<artifactId>site-maven-plugin</artifactId>
+			<version>0.12</version>
+			<configuration>
+				<!-- git commit message -->
+				<message>Maven artifacts for ${project.version}</message>
+				<!-- disable webpage processing -->
+				<noJekyll>true</noJekyll>
+				<!-- matches distribution management repository url above -->
+				<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
+				<!-- remote branch name -->
+				<branch>refs/heads/master</branch>
+				<!-- If you remove this then the old artifact will be removed and new
+                 one will replace. But with the merge tag you can just release by changing
+                                                  the version -->
+				<merge>true</merge>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<!-- github repo name -->
+				<repositoryName>mavenrepository</repositoryName>
+				<!-- github username -->
+				<repositoryOwner>1IoT</repositoryOwner>
+				<server>${github.global.server}</server>
+			</configuration>
+			<executions>
+				<execution>
+					<goals>
+						<goal>site</goal>
+					</goals>
+					<phase>deploy</phase>
+				</execution>
+			</executions>
+		</plugin>
+
+		<plugin>
+			<artifactId>maven-deploy-plugin</artifactId>
+			<version>2.8.1</version>
+			<configuration>
+				<altDeploymentRepository>local.staging.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+			</configuration>
+		</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.21.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.junit.platform</groupId>
+						<artifactId>junit-platform-surefire-provider</artifactId>
+						<version>1.2.0-M1</version>
+					</dependency>
+					<dependency>
+						<groupId>org.junit.jupiter</groupId>
+						<artifactId>junit-jupiter-engine</artifactId>
+						<version>5.2.0-M1</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>11</source>
+					<target>11</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
